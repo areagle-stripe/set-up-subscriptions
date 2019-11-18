@@ -1,7 +1,7 @@
 {
-  "name": "stripe-billing-card-subscription-quickstart",
+  "name": "stripe-billing-quickstart-demo",
   "version": "1.0.0",
-  "description": "A Stripe Billing demo to accept cards to create subscriptions",
+  "description": "A Stripe Billing subscriptions demo",
   "main": "index.js",
   "scripts": {
     "start": "node server/node/server.js",
