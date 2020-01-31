@@ -1,5 +1,7 @@
 var stripe;
 
+var customerId;
+
 var stripeElements = function(publicKey) {
   stripe = Stripe(publicKey);
   var elements = stripe.elements();
@@ -38,6 +40,12 @@ var stripeElements = function(publicKey) {
     changeLoadingState(true);
     // Initiate payment
     createPaymentMethodAndCustomer(stripe, card);
+  });
+
+  document.querySelector('#manage').addEventListener('click', function(evt) {
+    evt.preventDefault();
+    // Initiate payment
+    manageSubscription();
   });
 };
 
@@ -83,6 +91,7 @@ async function createCustomer(paymentMethod, cardholderEmail) {
       return response.json();
     })
     .then(subscription => {
+      customerId = subscription.customer;
       handleSubscription(subscription);
     });
 }
@@ -131,6 +140,24 @@ function confirmSubscription(subscriptionId) {
     })
     .then(function(subscription) {
       orderComplete(subscription);
+    });
+}
+
+function manageSubscription() {
+  return fetch('/customer-portal', {
+    method: 'post',
+    headers: {
+      'Content-type': 'application/json'
+    },
+    body: JSON.stringify({
+      customerId: customerId,
+    })
+  })
+    .then(function(response) {
+      return response.json();
+    })
+    .then(function(response) {
+      window.location.href = response.url;
     });
 }
 

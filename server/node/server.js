@@ -56,6 +56,14 @@ app.post('/subscription', async (req, res) => {
   res.send(subscription);
 });
 
+app.post('/customer-portal', async (req, res) => {
+  let session = await stripe.billingPortal.sessions.create({
+    customer: req.body.customerId,
+    return_url: 'http://localhost:4242',
+  });
+  res.send({url: session.url});
+});
+
 // Webhook handler for asynchronous events.
 app.post('/webhook', async (req, res) => {
   let data;
